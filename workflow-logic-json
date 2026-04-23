@@ -1,0 +1,29 @@
+{
+  "workflowName": "Leave Request & Balance Automation",
+  "trigger": {
+    "platform": "Airtable",
+    "event": "New Form Submission"
+  },
+  "logic": [
+    {
+      "step": "Notification",
+      "action": "Send Email to Manager"
+    },
+    {
+      "step": "Approval_Path",
+      "condition": "Approved",
+      "actions": [
+        { "action": "Update Status", "value": "Approved" },
+        { "action": "Auto-Deduct Balance", "formula": "Current - Requested" },
+        { "action": "Notify Employee", "type": "Confirmation" }
+      ]
+    },
+    {
+      "step": "Rejection_Path",
+      "condition": "Denied",
+      "actions": [
+        { "action": "Notify Employee", "type": "Rejection" }
+      ]
+    }
+  ]
+}
